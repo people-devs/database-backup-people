@@ -33,12 +33,12 @@ do
   if [[ ${apps[$i]} =~ "backup" ]] ; then
     echo "no need to backup ${apps[$i]}!"
   else
-    echo ${apps[$i]}
+    echo "now backing up ${apps[$i]}!"
     BACKUP_FILE_NAME="$(date +"%Y-%m-%d-%H-%M")-${apps[$i]}.dump"
     /app/vendor/heroku-toolbelt/bin/heroku pg:backups capture --app ${apps[$i]}
     curl -o $BACKUP_FILE_NAME `/app/vendor/heroku-toolbelt/bin/heroku pg:backups public-url --app ${apps[$i]}`
-    gzip $BACKUP_FILE_NAME
-    /tmp/aws/bin/aws s3 cp $BACKUP_FILE_NAME.gz s3://$S3_BUCKET_PATH/${apps[$i]}/$BACKUP_FILE_NAME.gz
+    #gzip $BACKUP_FILE_NAME
+    /tmp/aws/bin/aws s3 cp $BACKUP_FILE_NAME.gz s3://$S3_BUCKET_PATH/${apps[$i]}/$BACKUP_FILE_NAME
     echo "backup $BACKUP_FILE_NAME complete"
   fi
 done
