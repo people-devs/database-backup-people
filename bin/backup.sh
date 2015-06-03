@@ -35,7 +35,7 @@ do
   else
     echo ${apps[$i]}
     BACKUP_FILE_NAME="$(date +"%Y-%m-%d-%H-%M")-${apps[$i]}.dump"
-    /app/vendor/heroku-toolbelt/bin/heroku pg:backups capture $DATABASE --app ${apps[$i]}
+    /app/vendor/heroku-toolbelt/bin/heroku pg:backups capture --app ${apps[$i]}
     curl -o $BACKUP_FILE_NAME `/app/vendor/heroku-toolbelt/bin/heroku pg:backups public-url --app ${apps[$i]}`
     gzip $BACKUP_FILE_NAME
     /tmp/aws/bin/aws s3 cp $BACKUP_FILE_NAME.gz s3://$S3_BUCKET_PATH/$APP/$DATABASE/$BACKUP_FILE_NAME.gz
