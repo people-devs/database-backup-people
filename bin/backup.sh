@@ -30,7 +30,7 @@ apps=( `heroku apps` )
 echo "Total number of apps :"  $(( ${#apps[@]} -3 )) 
 for (( i = 3 ; i < ${#apps[@]} ; i++ ))
 do
-  if [[ ${apps[$i]} =~ "backup" ]] ; then
+  if [[ ${apps[$i]} =~ "backup" ]] || [[ $(heroku config --app ${apps[$i]}) != *DATABASE_URL* ]]; then
     echo "no need to backup ${apps[$i]}!"
   else
     echo "now backing up ${apps[$i]}!"
