@@ -26,7 +26,7 @@ chmod +x ./awscli-bundle/install
 
 #BACKUP_FILE_NAME="$(date +"%Y-%m-%d-%H-%M")-$APP-$DATABASE.dump"
 
-apps=( `/app/vendor/heroku-toolbelt/bin/heroku apps` )
+apps=( `heroku apps` )
 echo "Total number of apps :"  $(( ${#apps[@]} -3 )) 
 for (( i = 3 ; i < ${#apps[@]} ; i++ ))
 do
@@ -36,7 +36,7 @@ do
     echo "now backing up ${apps[$i]}!"
     BACKUP_FILE_NAME="$(date +"%Y-%m-%d-%H-%M")-${apps[$i]}.dump"
     /app/vendor/heroku-toolbelt/bin/heroku pg:backups capture --app ${apps[$i]}
-    curl -o $BACKUP_FILE_NAME `/app/vendor/heroku-toolbelt/bin/heroku pg:backups public-url --app ${apps[$i]}`
+    curl -o $BACKUP_FILE_NAME `heroku pg:backups public-url --app ${apps[$i]}`
     #gzip $BACKUP_FILE_NAME
     /tmp/aws/bin/aws s3 cp $BACKUP_FILE_NAME s3://$S3_BUCKET_PATH/${apps[$i]}/$BACKUP_FILE_NAME
     echo "backup $BACKUP_FILE_NAME complete"
