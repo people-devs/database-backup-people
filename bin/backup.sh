@@ -26,7 +26,7 @@ chmod +x ./awscli-bundle/install
 
 #BACKUP_FILE_NAME="$(date +"%Y-%m-%d-%H-%M")-$APP-$DATABASE.dump"
 
-apps=( `heroku apps` )
+apps=( `heroku apps -t pccoil` )
 echo "Total number of apps :"  $(( ${#apps[@]} -3 )) 
 for (( i = 3 ; i < ${#apps[@]} ; i++ ))
 do
